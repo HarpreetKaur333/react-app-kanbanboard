@@ -1,38 +1,37 @@
 import React from 'react';
-import styled from 'styled-components';
-import { Draggable } from 'react-beautiful-dnd';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+
 
 interface TaskProps {
-  task: {
-    id: string;
-    content: string;
-  };
-  index: number;
+  content: string;
+  onRemove: () => void;
 }
 
-const TaskContainer = styled.div<{ isDragging: boolean }>`
-  background: ${(props) => (props.isDragging ? '#d3f9d8' : '#fff')};
-  padding: 10px;
-  margin-bottom: 8px;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  border: 1px solid #ddd;
-`;
-
-const Task: React.FC<TaskProps> = ({ task, index }) => {
+const Task: React.FC<TaskProps> = ({ content, onRemove }) => {
   return (
-    <Draggable draggableId={task.id} index={index}>
-      {(provided, snapshot) => (
-        <TaskContainer
-          ref={provided.innerRef}
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          isDragging={snapshot.isDragging}
-        >
-          {task.content}
-        </TaskContainer>
-      )}
-    </Draggable>
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        backgroundColor: '#fff3cd',
+        border: '1px solid #f5c6cb',
+        padding: '5px',
+        marginBottom: '5px',
+        borderRadius: '5px',
+      }}
+    >
+      <span>{content}</span>
+      <IconButton
+        onClick={onRemove}
+        color="error" // Red color for delete
+        size="small" // Smaller size for a compact layout
+        aria-label="delete task"
+      >
+        <DeleteIcon />
+      </IconButton>
+    </div>
   );
 };
 

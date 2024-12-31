@@ -1,62 +1,88 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Droppable } from 'react-beautiful-dnd';
+import React, { useState } from 'react';
 import Task from './Task';
 
 interface ColumnProps {
-  column: {
-    id: string;
-    title: string;
-    taskIds: string[];
-  };
-  tasks: Array<{
-    id: string;
-    content: string;
-  }>;
+  title: string;
+  tasks: string[];
+  onAddTask: (task: string) => void;
+  onRemoveTask: (index: number) => void;
 }
 
-const ColumnContainer = styled.div`
-  background-color: #f3f3f3;
-  margin: 0 10px;
-  border-radius: 10px;
-  padding: 15px;
-  width: 250px;
-  display: flex;
-  flex-direction: column;
-`;
+const Column: React.FC<ColumnProps> = ({ title, tasks, onAddTask, onRemoveTask }) => {
+  const [newTask, setNewTask] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-const Title = styled.h3`
-  text-align: center;
-  margin-bottom: 10px;
-  font-size: 1.2rem;
-`;
+  const handleAddTask = () => {
+    if (newTask.trim()) {
+      onAddTask(newTask.trim());
+      setNewTask('');
+      setIsModalOpen(false);
+    }
+  };
 
-const TaskList = styled.div<{ isDraggingOver: boolean }>`
-  background-color: ${(props) => (props.isDraggingOver ? '#e0f7fa' : '#fff')};
-  border-radius: 5px;
-  padding: 10px;
-  min-height: 200px;
-`;
-
-const Column: React.FC<ColumnProps> = ({ column, tasks }) => {
   return (
-    <ColumnContainer>
-      <Title>{column.title}</Title>
-      <Droppable droppableId={column.id}>
-        {(provided, snapshot) => (
-          <TaskList
-            ref={provided.innerRef}
-            {...provided.droppableProps}
-            isDraggingOver={snapshot.isDraggingOver}
-          >
-            {tasks.map((task, index) => (
-              <Task key={task.id} task={task} index={index} />
-            ))}
-            {provided.placeholder}
-          </TaskList>
-        )}
-      </Droppable>
-    </ColumnContainer>
+    <div className="card">
+      <div className="card-header">{title}</div>
+      <div className="card-body">
+        <button
+          className="btn btn-success w-100 mb-3"
+          onClick={() => setIsModalOpen(true)}
+        >
+          + Add Task
+        </button>
+        <div>
+          {tasks.map((task, index) => (
+            <Task
+              key={index}
+              content={task}
+              onRemove={() => onRemoveTask(index)}
+            />
+          ))}
+        </div>
+      </div>
+
+      {isModalOpen && (
+        <div
+          className="modal show d-block"
+          style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
+        >
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Add Task</h5>
+                <button
+                  type="button"
+                  className="btn-close"
+                  onClick={() => setIsModalOpen(false)}
+                ></button>
+              </div>
+              <div className="modal-body">
+                <input
+                  type="text"
+                  className="form-control mb-3"
+                  value={newTask}
+                  onChange={(e) => setNewTask(e.target.value)}
+                />
+              </div>
+              <div className="modal-footer">
+                <button
+                  className="btn btn-success"
+                  onClick={handleAddTask}
+                >
+                  Add
+                </button>
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => setIsModalOpen(false)}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 

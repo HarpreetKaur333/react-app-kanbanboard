@@ -1,10 +1,39 @@
 /* General styles */
 body {
-  font-family: 'Arial', sans-serif;
-  background-color: #fef6e4;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  background-color: #fefaf3; /* Light beige background */
+  height: 100vh; /* Full viewport height */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  max-width: 90%;
+  width: 100%;
+  height: auto; /* Adjust height dynamically based on content */
+}
+
+#root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%; /* Full width of the screen */
+  height: 100%; /* Full height of the screen */
+}
+
+
 
 .app {
   text-align: center;
