@@ -1,22 +1,24 @@
 import React from 'react';
 import Column from './Column';
 
+type ColumnKeys = 'Hot Tasks' | 'To Do' | 'In Work' | 'Done';
+
 const Board: React.FC = () => {
-  const [columns, setColumns] = React.useState({
+  const [columns, setColumns] = React.useState<{ [key in ColumnKeys]: string[] }>({
     'Hot Tasks': ['Pay attention to Frontend tasks'],
     'To Do': ['Start learning Next.js framework'],
     'In Work': ['Learn React', 'Read one chapter of the book'],
     'Done': ['Learned basic JavaScript'],
   });
 
-  const handleAddTask = (column: string, task: string) => {
+  const handleAddTask = (column: ColumnKeys, task: string) => {
     setColumns((prev) => ({
       ...prev,
       [column]: [...prev[column], task],
     }));
   };
 
-  const handleRemoveTask = (column: string, index: number) => {
+  const handleRemoveTask = (column: ColumnKeys, index: number) => {
     setColumns((prev) => {
       const updatedTasks = [...prev[column]];
       updatedTasks.splice(index, 1);
@@ -36,8 +38,8 @@ const Board: React.FC = () => {
             <Column
               title={title}
               tasks={tasks}
-              onAddTask={(task) => handleAddTask(title, task)}
-              onRemoveTask={(index) => handleRemoveTask(title, index)}
+              onAddTask={(task) => handleAddTask(title as ColumnKeys, task)}
+              onRemoveTask={(index) => handleRemoveTask(title as ColumnKeys, index)}
             />
           </div>
         ))}
