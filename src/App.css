@@ -1,15 +1,20 @@
-/* General styles */
 body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: Arial, sans-serif;
-  background-color: #fefaf3; /* Light beige background */
-  height: 100vh; /* Full viewport height */
+  background-color: #d4c2a4; /* Fallback light beige background */
+  background-image: url('/images/bg.jpg'); /* Path to your image */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
+
 
 .app-container {
   display: flex;
